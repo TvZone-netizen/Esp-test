@@ -1,0 +1,62 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+-- Function to create a highlight effect for doors
+local function createDoorHighlight(instance)
+    local highlight = Instance.new("Highlight")
+    highlight.FillColor = Color3.fromRGB(144, 238, 144) -- Light Green color for doors
+    highlight.OutlineColor = Color3.fromRGB(255, 255, 255) -- White outline color
+    highlight.FillTransparency = 0.5 -- Transparency of the fill
+    highlight.OutlineTransparency = 0 -- Opaque outline
+    highlight.Parent = instance
+end
+
+-- Function to create a highlight effect for keys
+local function createKeyHighlight(instance)
+    local highlight = Instance.new("Highlight")
+    highlight.FillColor = Color3.fromRGB(255, 165, 0) -- Orange color for keys
+    highlight.OutlineColor = Color3.fromRGB(255, 255, 255) -- White outline color
+    highlight.FillTransparency = 0.5 -- Transparency of the fill
+    highlight.OutlineTransparency = 0 -- Opaque outline
+    highlight.Parent = instance
+end
+
+-- Main ESP function
+local function ESP()
+    for _, obj in pairs(workspace:GetChildren()) do
+        if obj:IsA("Model") and obj.Name:find("Door") then
+            createDoorHighlight(obj) -- Apply door highlight
+            if not obj:FindFirstChild("Label") then
+                local label = Instance.new("BillboardGui")
+                label.Size = UDim2.new(0, 100, 0, 50) -- Size of the label
+                label.Adornee = obj:FindFirstChild("Handle") or obj:FindFirstChildOfClass("Part")
+                local textLabel = Instance.new("TextLabel", label)
+                textLabel.Text = "𝙙𝙤𝙤𝙧" -- Text for the door
+                textLabel.Size = UDim2.new(1, 0, 1, 0)
+                textLabel.BackgroundTransparency = 1 -- Make background transparent
+                textLabel.TextColor3 = Color3.fromRGB(0, 0, 0) -- Black text color
+                textLabel.TextScaled = true -- Scale the text
+                label.Parent = obj
+            end
+        elseif obj:IsA("Model") and obj.Name:find("Key") then
+            createKeyHighlight(obj) -- Apply key highlight
+            if not obj:FindFirstChild("Label") then
+                local label = Instance.new("BillboardGui")
+                label.Size = UDim2.new(0, 100, 0, 50) -- Size of the label
+                label.Adornee = obj:FindFirstChild("Handle") or obj:FindFirstChildOfClass("Part")
+                local textLabel = Instance.new("TextLabel", label)
+                textLabel.Text = "𝙠𝙚𝙮" -- Text for the key
+                textLabel.Size = UDim2.new(1, 0, 1, 0)
+                textLabel.BackgroundTransparency = 1 -- Make background transparent
+                textLabel.TextColor3 = Color3.fromRGB(0, 0, 0) -- Black text color
+                textLabel.TextScaled = true -- Scale the text
+                label.Parent = obj
+            end
+        end
+    end
+end
+
+-- Run the ESP continuously
+RunService.Heartbeat:Connect(function()
+    ESP()
+end)
